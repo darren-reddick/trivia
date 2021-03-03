@@ -224,9 +224,9 @@ func TestGoldenOne(t *testing.T) {
 			game.Roll(i)
 
 			if i%5 == 0 {
-				notAWinner = game.WrongAnswer()
+				notAWinner = game.wrongAnswer()
 			} else {
-				notAWinner = game.WasCorrectlyAnswered()
+				notAWinner = game.wasCorrectlyAnswered()
 
 			}
 

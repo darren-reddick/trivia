@@ -158,7 +158,7 @@ func (g *Game) currentCategory() string {
 	return "Rock"
 }
 
-func (g *Game) WasCorrectlyAnswered() bool {
+func (g *Game) wasCorrectlyAnswered() bool {
 	if g.inPenaltyBox[g.currentPlayer] {
 		if g.isGettingOutOfPenaltyBox {
 			fmt.Println("Answer was correct!!!!")
@@ -199,7 +199,7 @@ func (g *Game) didPlayerWin() bool {
 	return !(g.purses[g.currentPlayer] == 6)
 }
 
-func (g *Game) WrongAnswer() bool {
+func (g *Game) wrongAnswer() bool {
 	fmt.Println("Question was incorrectly answered")
 	fmt.Printf("%s was sent to the penalty box\n", g.players[g.currentPlayer])
 	g.inPenaltyBox[g.currentPlayer] = true
@@ -223,9 +223,9 @@ func main() {
 		game.Roll(rand.Intn(5) + 1)
 
 		if rand.Intn(9) == 7 {
-			notAWinner = game.WrongAnswer()
+			notAWinner = game.wrongAnswer()
 		} else {
-			notAWinner = game.WasCorrectlyAnswered()
+			notAWinner = game.wasCorrectlyAnswered()
 
 		}
 

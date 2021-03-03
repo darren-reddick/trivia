@@ -172,13 +172,13 @@ func (g *Game) WasCorrectlyAnswered() bool {
 			}
 
 			return winner
-		} else {
-			g.currentPlayer++
-			if g.currentPlayer == len(g.players) {
-				g.currentPlayer = 0
-			}
-			return true
 		}
+		g.currentPlayer++
+		if g.currentPlayer == len(g.players) {
+			g.currentPlayer = 0
+		}
+		return true
+
 	} else {
 
 		fmt.Println("Answer was corrent!!!!")
@@ -194,7 +194,6 @@ func (g *Game) WasCorrectlyAnswered() bool {
 		return winner
 	}
 
-	return false
 }
 
 func (g *Game) didPlayerWin() bool {

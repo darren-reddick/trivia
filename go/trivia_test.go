@@ -216,12 +216,12 @@ func TestGoldenOne(t *testing.T) {
 	out := capturer.CaptureStdout(func() {
 		notAWinner := false
 
-		game := NewGame([]string{"Chet", "Pat", "Sue"})
+		game := newGame([]string{"Chet", "Pat", "Sue"})
 
 		rand.Seed(time.Now().UTC().UnixNano())
 
 		for i := range diceArr {
-			game.Roll(i)
+			game.roll(i)
 
 			if i%5 == 0 {
 				notAWinner = game.wrongAnswer()

@@ -6,6 +6,7 @@ import (
 	"time"
 )
 
+// Game represents a trivia game
 type Game struct {
 	players      []string
 	places       []int
@@ -21,7 +22,7 @@ type Game struct {
 	isGettingOutOfPenaltyBox bool
 }
 
-func NewGame(players []string) *Game {
+func newGame(players []string) *Game {
 	game := &Game{}
 	for i := 0; i < 6; i++ {
 		game.places = append(game.places, 0)
@@ -37,21 +38,21 @@ func NewGame(players []string) *Game {
 		game.sportsQuestions = append(game.sportsQuestions,
 			fmt.Sprintf("Sports Question %d\n", i))
 		game.rockQuestions = append(game.rockQuestions,
-			game.CreateRockQuestion(i))
+			game.createRockQuestion(i))
 	}
 
 	for _, player := range players {
-		game.Add(player)
+		game.add(player)
 	}
 
 	return game
 }
 
-func (g *Game) CreateRockQuestion(index int) string {
+func (g *Game) createRockQuestion(index int) string {
 	return fmt.Sprintf("Rock Question %d\n", index)
 }
 
-func (g *Game) IsPlayable() bool {
+func (g *Game) isPlayable() bool {
 	return g.howManyPlayers() >= 2
 }
 
@@ -59,7 +60,7 @@ func (g *Game) howManyPlayers() int {
 	return len(g.players)
 }
 
-func (g *Game) Add(playerName string) bool {
+func (g *Game) add(playerName string) bool {
 	g.players = append(g.players, playerName)
 	g.places[g.howManyPlayers()] = 0
 	g.purses[g.howManyPlayers()] = 0
@@ -71,7 +72,7 @@ func (g *Game) Add(playerName string) bool {
 	return true
 }
 
-func (g *Game) Roll(roll int) {
+func (g *Game) roll(roll int) {
 	fmt.Printf("%s is the current player\n", g.players[g.currentPlayer])
 	fmt.Printf("They have rolled a %d\n", roll)
 
@@ -215,12 +216,12 @@ func (g *Game) wrongAnswer() bool {
 func main() {
 	notAWinner := false
 
-	game := NewGame([]string{"Chet", "Pat", "Sue"})
+	game := newGame([]string{"Chet", "Pat", "Sue"})
 
 	rand.Seed(time.Now().UTC().UnixNano())
 
 	for {
-		game.Roll(rand.Intn(5) + 1)
+		game.roll(rand.Intn(5) + 1)
 
 		if rand.Intn(9) == 7 {
 			notAWinner = game.wrongAnswer()

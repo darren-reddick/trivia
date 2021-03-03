@@ -211,7 +211,7 @@ Answer was correct!!!!
 Pat now has 6 Gold Coins.
 `
 
-func TestOne(t *testing.T) {
+func TestGoldenOne(t *testing.T) {
 
 	out := capturer.CaptureStdout(func() {
 		notAWinner := false

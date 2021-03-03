@@ -21,7 +21,7 @@ type Game struct {
 	isGettingOutOfPenaltyBox bool
 }
 
-func NewGame() *Game {
+func NewGame(players []string) *Game {
 	game := &Game{}
 	for i := 0; i < 6; i++ {
 		game.places = append(game.places, 0)
@@ -38,6 +38,10 @@ func NewGame() *Game {
 			fmt.Sprintf("Sports Question %d\n", i))
 		game.rockQuestions = append(game.rockQuestions,
 			game.CreateRockQuestion(i))
+	}
+
+	for _, player := range players {
+		game.Add(player)
 	}
 
 	return game
@@ -213,11 +217,7 @@ func (g *Game) WrongAnswer() bool {
 func main() {
 	notAWinner := false
 
-	game := NewGame()
-
-	game.Add("Chet")
-	game.Add("Pat")
-	game.Add("Sue")
+	game := NewGame([]string{"Chet", "Pat", "Sue"})
 
 	rand.Seed(time.Now().UTC().UnixNano())
 

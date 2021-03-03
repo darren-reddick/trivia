@@ -216,11 +216,7 @@ func TestGoldenOne(t *testing.T) {
 	out := capturer.CaptureStdout(func() {
 		notAWinner := false
 
-		game := NewGame()
-
-		game.Add("Chet")
-		game.Add("Pat")
-		game.Add("Sue")
+		game := NewGame([]string{"Chet", "Pat", "Sue"})
 
 		rand.Seed(time.Now().UTC().UnixNano())
 

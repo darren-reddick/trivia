@@ -179,20 +179,19 @@ func (g *Game) WasCorrectlyAnswered() bool {
 		}
 		return true
 
-	} else {
-
-		fmt.Println("Answer was corrent!!!!")
-		g.purses[g.currentPlayer]++
-		fmt.Printf("%s now has %d Gold Coins.\n", g.players[g.currentPlayer], g.purses[g.currentPlayer])
-
-		winner := g.didPlayerWin()
-		g.currentPlayer++
-		if g.currentPlayer == len(g.players) {
-			g.currentPlayer = 0
-		}
-
-		return winner
 	}
+
+	fmt.Println("Answer was corrent!!!!")
+	g.purses[g.currentPlayer]++
+	fmt.Printf("%s now has %d Gold Coins.\n", g.players[g.currentPlayer], g.purses[g.currentPlayer])
+
+	winner := g.didPlayerWin()
+	g.currentPlayer++
+	if g.currentPlayer == len(g.players) {
+		g.currentPlayer = 0
+	}
+
+	return winner
 
 }
 

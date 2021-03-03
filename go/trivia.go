@@ -162,18 +162,18 @@ func (g *Game) WasCorrectlyAnswered() bool {
 	if g.inPenaltyBox[g.currentPlayer] {
 		if g.isGettingOutOfPenaltyBox {
 			fmt.Println("Answer was correct!!!!")
-			g.purses[g.currentPlayer] += 1
+			g.purses[g.currentPlayer]++
 			fmt.Printf("%s now has %d Gold Coins.\n", g.players[g.currentPlayer], g.purses[g.currentPlayer])
 
 			winner := g.didPlayerWin()
-			g.currentPlayer += 1
+			g.currentPlayer++
 			if g.currentPlayer == len(g.players) {
 				g.currentPlayer = 0
 			}
 
 			return winner
 		} else {
-			g.currentPlayer += 1
+			g.currentPlayer++
 			if g.currentPlayer == len(g.players) {
 				g.currentPlayer = 0
 			}
@@ -182,11 +182,11 @@ func (g *Game) WasCorrectlyAnswered() bool {
 	} else {
 
 		fmt.Println("Answer was corrent!!!!")
-		g.purses[g.currentPlayer] += 1
+		g.purses[g.currentPlayer]++
 		fmt.Printf("%s now has %d Gold Coins.\n", g.players[g.currentPlayer], g.purses[g.currentPlayer])
 
 		winner := g.didPlayerWin()
-		g.currentPlayer += 1
+		g.currentPlayer++
 		if g.currentPlayer == len(g.players) {
 			g.currentPlayer = 0
 		}

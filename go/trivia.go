@@ -213,20 +213,17 @@ func (g *Game) wrongAnswer() bool {
 	return true
 }
 
-func main() {
+func (g *Game) play() {
 	notAWinner := false
-
-	game := newGame([]string{"Chet", "Pat", "Sue"})
-
 	rand.Seed(time.Now().UTC().UnixNano())
 
 	for {
-		game.roll(rand.Intn(5) + 1)
+		g.roll(rand.Intn(5) + 1)
 
 		if rand.Intn(9) == 7 {
-			notAWinner = game.wrongAnswer()
+			notAWinner = g.wrongAnswer()
 		} else {
-			notAWinner = game.wasCorrectlyAnswered()
+			notAWinner = g.wasCorrectlyAnswered()
 
 		}
 
@@ -234,4 +231,12 @@ func main() {
 			break
 		}
 	}
+}
+
+func main() {
+
+	game := newGame([]string{"Chet", "Pat", "Sue"})
+
+	game.play()
+
 }

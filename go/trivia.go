@@ -6,6 +6,7 @@ import (
 	"time"
 )
 
+// Game represents a trivia game
 type Game struct {
 	players      []string
 	places       []int
@@ -21,7 +22,7 @@ type Game struct {
 	isGettingOutOfPenaltyBox bool
 }
 
-func NewGame() *Game {
+func newGame(players []string) *Game {
 	game := &Game{}
 	for i := 0; i < 6; i++ {
 		game.places = append(game.places, 0)
@@ -37,197 +38,193 @@ func NewGame() *Game {
 		game.sportsQuestions = append(game.sportsQuestions,
 			fmt.Sprintf("Sports Question %d\n", i))
 		game.rockQuestions = append(game.rockQuestions,
-			game.CreateRockQuestion(i))
+			game.createRockQuestion(i))
+	}
+
+	for _, player := range players {
+		game.add(player)
 	}
 
 	return game
 }
 
-func (me *Game) CreateRockQuestion(index int) string {
+func (g *Game) createRockQuestion(index int) string {
 	return fmt.Sprintf("Rock Question %d\n", index)
 }
 
-func (me *Game) IsPlayable() bool {
-	return me.howManyPlayers() >= 2
+func (g *Game) isPlayable() bool {
+	return g.howManyPlayers() >= 2
 }
 
-func (me *Game) howManyPlayers() int {
-	return len(me.players)
+func (g *Game) howManyPlayers() int {
+	return len(g.players)
 }
 
-func (me *Game) Add(playerName string) bool {
-	me.players = append(me.players, playerName)
-	me.places[me.howManyPlayers()] = 0
-	me.purses[me.howManyPlayers()] = 0
-	me.inPenaltyBox[me.howManyPlayers()] = false
+func (g *Game) add(playerName string) bool {
+	g.players = append(g.players, playerName)
+	g.places[g.howManyPlayers()] = 0
+	g.purses[g.howManyPlayers()] = 0
+	g.inPenaltyBox[g.howManyPlayers()] = false
 
 	fmt.Printf("%s was added\n", playerName)
-	fmt.Printf("They are player number %d\n", len(me.players))
+	fmt.Printf("They are player number %d\n", len(g.players))
 
 	return true
 }
 
-func (me *Game) Roll(roll int) {
-	fmt.Printf("%s is the current player\n", me.players[me.currentPlayer])
+func (g *Game) roll(roll int) {
+	fmt.Printf("%s is the current player\n", g.players[g.currentPlayer])
 	fmt.Printf("They have rolled a %d\n", roll)
 
-	if me.inPenaltyBox[me.currentPlayer] {
+	if g.inPenaltyBox[g.currentPlayer] {
 		if roll%2 != 0 {
-			me.isGettingOutOfPenaltyBox = true
+			g.isGettingOutOfPenaltyBox = true
 
-			fmt.Printf("%s is getting out of the penalty box\n", me.players[me.currentPlayer])
-			me.places[me.currentPlayer] = me.places[me.currentPlayer] + roll
-			if me.places[me.currentPlayer] > 11 {
-				me.places[me.currentPlayer] = me.places[me.currentPlayer] - 12
+			fmt.Printf("%s is getting out of the penalty box\n", g.players[g.currentPlayer])
+			g.places[g.currentPlayer] = g.places[g.currentPlayer] + roll
+			if g.places[g.currentPlayer] > 11 {
+				g.places[g.currentPlayer] = g.places[g.currentPlayer] - 12
 			}
 
-			fmt.Printf("%s's new location is %d\n", me.players[me.currentPlayer], me.places[me.currentPlayer])
-			fmt.Printf("The category is %s\n", me.currentCategory())
-			me.askQuestion()
+			fmt.Printf("%s's new location is %d\n", g.players[g.currentPlayer], g.places[g.currentPlayer])
+			fmt.Printf("The category is %s\n", g.currentCategory())
+			g.askQuestion()
 		} else {
-			fmt.Printf("%s is not getting out of the penalty box\n", me.players[me.currentPlayer])
-			me.isGettingOutOfPenaltyBox = false
+			fmt.Printf("%s is not getting out of the penalty box\n", g.players[g.currentPlayer])
+			g.isGettingOutOfPenaltyBox = false
 		}
 	} else {
-		me.places[me.currentPlayer] = me.places[me.currentPlayer] + roll
-		if me.places[me.currentPlayer] > 11 {
-			me.places[me.currentPlayer] = me.places[me.currentPlayer] - 12
+		g.places[g.currentPlayer] = g.places[g.currentPlayer] + roll
+		if g.places[g.currentPlayer] > 11 {
+			g.places[g.currentPlayer] = g.places[g.currentPlayer] - 12
 		}
 
-		fmt.Printf("%s's new location is %d\n", me.players[me.currentPlayer], me.places[me.currentPlayer])
-		fmt.Printf("The category is %s\n", me.currentCategory())
-		me.askQuestion()
+		fmt.Printf("%s's new location is %d\n", g.players[g.currentPlayer], g.places[g.currentPlayer])
+		fmt.Printf("The category is %s\n", g.currentCategory())
+		g.askQuestion()
 	}
 }
 
-func (me *Game) askQuestion() {
-	if me.currentCategory() == "Pop" {
-		question := me.popQuestions[0]
-		me.popQuestions = me.popQuestions[1:]
+func (g *Game) askQuestion() {
+	if g.currentCategory() == "Pop" {
+		question := g.popQuestions[0]
+		g.popQuestions = g.popQuestions[1:]
 		fmt.Printf(question)
 	}
-	if me.currentCategory() == "Science" {
-		question := me.scienceQuestions[0]
-		me.scienceQuestions = me.scienceQuestions[1:]
+	if g.currentCategory() == "Science" {
+		question := g.scienceQuestions[0]
+		g.scienceQuestions = g.scienceQuestions[1:]
 		fmt.Printf(question)
 	}
-	if me.currentCategory() == "Sports" {
-		question := me.sportsQuestions[0]
-		me.sportsQuestions = me.sportsQuestions[1:]
+	if g.currentCategory() == "Sports" {
+		question := g.sportsQuestions[0]
+		g.sportsQuestions = g.sportsQuestions[1:]
 		fmt.Printf(question)
 	}
-	if me.currentCategory() == "Rock" {
-		question := me.rockQuestions[0]
-		me.rockQuestions = me.rockQuestions[1:]
+	if g.currentCategory() == "Rock" {
+		question := g.rockQuestions[0]
+		g.rockQuestions = g.rockQuestions[1:]
 		fmt.Printf(question)
 	}
 }
 
-func (me *Game) currentCategory() string {
-	if me.places[me.currentPlayer] == 0 {
+func (g *Game) currentCategory() string {
+
+	if g.places[g.currentPlayer] == 0 {
 		return "Pop"
 	}
-	if me.places[me.currentPlayer] == 4 {
+	if g.places[g.currentPlayer] == 4 {
 		return "Pop"
 	}
-	if me.places[me.currentPlayer] == 8 {
+	if g.places[g.currentPlayer] == 8 {
 		return "Pop"
 	}
-	if me.places[me.currentPlayer] == 1 {
+	if g.places[g.currentPlayer] == 1 {
 		return "Science"
 	}
-	if me.places[me.currentPlayer] == 5 {
+	if g.places[g.currentPlayer] == 5 {
 		return "Science"
 	}
-	if me.places[me.currentPlayer] == 9 {
+	if g.places[g.currentPlayer] == 9 {
 		return "Science"
 	}
-	if me.places[me.currentPlayer] == 2 {
+	if g.places[g.currentPlayer] == 2 {
 		return "Sports"
 	}
-	if me.places[me.currentPlayer] == 6 {
+	if g.places[g.currentPlayer] == 6 {
 		return "Sports"
 	}
-	if me.places[me.currentPlayer] == 10 {
+	if g.places[g.currentPlayer] == 10 {
 		return "Sports"
 	}
 	return "Rock"
 }
 
-func (me *Game) WasCorrectlyAnswered() bool {
-	if me.inPenaltyBox[me.currentPlayer] {
-		if me.isGettingOutOfPenaltyBox {
+func (g *Game) wasCorrectlyAnswered() bool {
+	if g.inPenaltyBox[g.currentPlayer] {
+		if g.isGettingOutOfPenaltyBox {
 			fmt.Println("Answer was correct!!!!")
-			me.purses[me.currentPlayer] += 1
-			fmt.Printf("%s now has %d Gold Coins.\n", me.players[me.currentPlayer], me.purses[me.currentPlayer])
+			g.purses[g.currentPlayer]++
+			fmt.Printf("%s now has %d Gold Coins.\n", g.players[g.currentPlayer], g.purses[g.currentPlayer])
 
-			winner := me.didPlayerWin()
-			me.currentPlayer += 1
-			if me.currentPlayer == len(me.players) {
-				me.currentPlayer = 0
+			winner := g.didPlayerWin()
+			g.currentPlayer++
+			if g.currentPlayer == len(g.players) {
+				g.currentPlayer = 0
 			}
 
 			return winner
-		} else {
-			me.currentPlayer += 1
-			if me.currentPlayer == len(me.players) {
-				me.currentPlayer = 0
-			}
-			return true
 		}
-	} else {
-
-		fmt.Println("Answer was corrent!!!!")
-		me.purses[me.currentPlayer] += 1
-		fmt.Printf("%s now has %d Gold Coins.\n", me.players[me.currentPlayer], me.purses[me.currentPlayer])
-
-		winner := me.didPlayerWin()
-		me.currentPlayer += 1
-		if me.currentPlayer == len(me.players) {
-			me.currentPlayer = 0
+		g.currentPlayer++
+		if g.currentPlayer == len(g.players) {
+			g.currentPlayer = 0
 		}
+		return true
 
-		return winner
 	}
 
-	return false
+	fmt.Println("Answer was correct!!!!")
+	g.purses[g.currentPlayer]++
+	fmt.Printf("%s now has %d Gold Coins.\n", g.players[g.currentPlayer], g.purses[g.currentPlayer])
+
+	winner := g.didPlayerWin()
+	g.currentPlayer++
+	if g.currentPlayer == len(g.players) {
+		g.currentPlayer = 0
+	}
+
+	return winner
+
 }
 
-func (me *Game) didPlayerWin() bool {
-	return !(me.purses[me.currentPlayer] == 6)
+func (g *Game) didPlayerWin() bool {
+	return !(g.purses[g.currentPlayer] == 6)
 }
 
-func (me *Game) WrongAnswer() bool {
+func (g *Game) wrongAnswer() bool {
 	fmt.Println("Question was incorrectly answered")
-	fmt.Printf("%s was sent to the penalty box\n", me.players[me.currentPlayer])
-	me.inPenaltyBox[me.currentPlayer] = true
+	fmt.Printf("%s was sent to the penalty box\n", g.players[g.currentPlayer])
+	g.inPenaltyBox[g.currentPlayer] = true
 
-	me.currentPlayer += 1
-	if me.currentPlayer == len(me.players) {
-		me.currentPlayer = 0
+	g.currentPlayer++
+	if g.currentPlayer == len(g.players) {
+		g.currentPlayer = 0
 	}
 
 	return true
 }
 
-func main() {
+func (g *Game) play() {
 	notAWinner := false
-
-	game := NewGame()
-
-	game.Add("Chet")
-	game.Add("Pat")
-	game.Add("Sue")
-
 	rand.Seed(time.Now().UTC().UnixNano())
 
 	for {
-		game.Roll(rand.Intn(5) + 1)
+		g.roll(rand.Intn(5) + 1)
 
 		if rand.Intn(9) == 7 {
-			notAWinner = game.WrongAnswer()
+			notAWinner = g.wrongAnswer()
 		} else {
-			notAWinner = game.WasCorrectlyAnswered()
+			notAWinner = g.wasCorrectlyAnswered()
 
 		}
 
@@ -235,4 +232,12 @@ func main() {
 			break
 		}
 	}
+}
+
+func main() {
+
+	game := newGame([]string{"Chet", "Pat", "Sue"})
+
+	game.play()
+
 }

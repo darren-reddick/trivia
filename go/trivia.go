@@ -129,6 +129,7 @@ func (g *Game) askQuestion() {
 }
 
 func (g *Game) currentCategory() string {
+
 	if g.places[g.currentPlayer] == 0 {
 		return "Pop"
 	}

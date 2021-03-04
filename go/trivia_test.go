@@ -239,7 +239,7 @@ func TestGoldenOne(t *testing.T) {
 	})
 
 	if out != goldenTest {
-		t.Errorf("Wanted %s but got %s", goldenTest, out)
+		t.Errorf("Wanted:\n%s\n\n\nbut got:\n%s", goldenTest, out)
 	}
 
 }

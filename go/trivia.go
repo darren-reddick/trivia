@@ -182,7 +182,7 @@ func (g *Game) wasCorrectlyAnswered() bool {
 
 	}
 
-	fmt.Println("Answer was corrent!!!!")
+	fmt.Println("Answer was correct!!!!")
 	g.purses[g.currentPlayer]++
 	fmt.Printf("%s now has %d Gold Coins.\n", g.players[g.currentPlayer], g.purses[g.currentPlayer])
 

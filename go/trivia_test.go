@@ -1,9 +1,7 @@
 package main
 
 import (
-	"math/rand"
 	"testing"
-	"time"
 
 	capturer "github.com/kami-zh/go-capturer"
 )
@@ -211,29 +209,33 @@ Answer was correct!!!!
 Pat now has 6 Gold Coins.
 `
 
+func (g *Game) testPlay(seed []int) {
+
+	notAWinner := false
+
+	for i := range diceArr {
+		g.roll(i)
+
+		if i%5 == 0 {
+			notAWinner = g.wrongAnswer()
+		} else {
+			notAWinner = g.wasCorrectlyAnswered()
+
+		}
+
+		if !notAWinner {
+			break
+		}
+	}
+
+}
+
 func TestGoldenOne(t *testing.T) {
 
 	out := capturer.CaptureStdout(func() {
-		notAWinner := false
-
 		game := newGame([]string{"Chet", "Pat", "Sue"})
 
-		rand.Seed(time.Now().UTC().UnixNano())
-
-		for i := range diceArr {
-			game.roll(i)
-
-			if i%5 == 0 {
-				notAWinner = game.wrongAnswer()
-			} else {
-				notAWinner = game.wasCorrectlyAnswered()
-
-			}
-
-			if !notAWinner {
-				break
-			}
-		}
+		game.testPlay(diceArr)
 	})
 
 	if out != goldenTest {
